@@ -26,8 +26,7 @@
                 e.preventDefault();
                 deferredPrompt = e;
                 if (installBtn) {
-                    installBtn.classList.remove('hidden');
-                    installBtn.classList.add('inline-flex');
+                    installBtn.style.display = 'inline-flex';
                 }
             });
 
@@ -38,22 +37,30 @@
                     return console.warn('✗ installBtn element not found in DOM');
                 }
 
-                if (deferredPrompt) {
-                    installBtn.classList.remove('hidden');
-                    installBtn.classList.add('inline-flex');
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+                if (!isStandalone) {
+                    installBtn.style.display = 'inline-flex';
                 }
 
                 installBtn.addEventListener('click', async () => {
                     console.log('Install button clicked', {deferredPrompt: !!deferredPrompt});
-                    if (!deferredPrompt) return;
-                    deferredPrompt.prompt();
-                    const result = await deferredPrompt.userChoice;
-                    if (result.outcome === 'accepted') {
-                        console.log('User accepted install');
-                        installBtn.classList.add('hidden');
-                        installBtn.classList.remove('inline-flex');
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const result = await deferredPrompt.userChoice;
+                        if (result.outcome === 'accepted') {
+                            console.log('User accepted install');
+                            installBtn.style.display = 'none';
+                        }
+                        deferredPrompt = null;
+                        return;
                     }
-                    deferredPrompt = null;
+
+                    if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+                        alert('Use Safari share menu and choose "Add to Home Screen" to install this app.');
+                        return;
+                    }
+
+                    alert('Install prompt is not available on this browser. Use the browser menu to add to home screen.');
                 });
             });
         </script>
