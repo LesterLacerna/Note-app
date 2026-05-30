@@ -4,6 +4,9 @@ RUN apt-get update && apt-get install -y \
     libzip-dev zip unzip curl git libpq-dev \
     && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql pgsql
 
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 RUN a2enmod rewrite
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -11,6 +14,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY . .
+
+RUN npm install \
+    && npm run build \
+    && rm -rf node_modules
 
 RUN composer install --no-dev --optimize-autoloader
 

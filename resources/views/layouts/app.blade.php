@@ -63,8 +63,8 @@
             @include('layouts.navigation')
 
             <!-- PWA Install Button (hidden until available) -->
-            <div class="fixed bottom-6 right-6 z-50">
-                <button id="installBtn" class="hidden inline-flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-slate-200">
+            <div class="fixed bottom-6 right-6 z-[9999]">
+                <button id="installBtn" type="button" class="hidden inline-flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-slate-200 pointer-events-auto">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
                     </svg>
