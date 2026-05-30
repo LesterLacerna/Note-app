@@ -2,7 +2,7 @@ FROM php:8.2-apache
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip curl git libpq-dev \
+    libzip-dev zip unzip curl git libpq-dev nodejs npm \
     && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql pgsql
 
 # Enable Apache mod_rewrite
@@ -19,6 +19,9 @@ COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Install Node dependencies and build assets
+RUN npm install && npm run build
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
