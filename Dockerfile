@@ -2,8 +2,12 @@ FROM php:8.2-apache
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip curl git libpq-dev nodejs npm \
+    libzip-dev zip unzip curl git libpq-dev ca-certificates gnupg \
     && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql pgsql
+
+# Install Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
